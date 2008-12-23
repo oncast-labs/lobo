@@ -1,0 +1,101 @@
+<project name="Profiling test scenario" basedir="." default="simple.call">
+
+	<path id="classpath">
+		<fileset dir="../../../repository">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="../build/dist">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="profile" classname="br.com.oncast.dev.lobo.task.ProfilerTask" classpathref="classpath" />
+
+	<target name="compile">
+		<mkdir dir="build/classes"/>
+		<javac srcdir="src" destdir="build/classes" classpathref="classpath"/>
+	</target>
+	
+	<target name="simple.call" depends="compile">
+		<mkdir dir="build/test-classes" />
+		<profile output="build/profile.output" classpathref="classpath">
+			<batchProfile>
+				<fileset dir="build/test-classes" includes="**/Profile*.class" />
+			</batchProfile>
+		</profile>
+	</target>
+
+	<target name="simple.call.internal.classpath" depends="compile">
+		<mkdir dir="build/test-classes" />
+		<profile output="build/profile.output">
+			<classpath id="internal.classpath">
+				<fileset dir="${basedir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchProfile>
+				<fileset dir="build/test-classes" includes="**/Profile*.class" />
+			</batchProfile>
+		</profile>
+	</target>
+
+	<target name="simple.call.both.classpath" depends="compile">
+		<mkdir dir="build/test-classes" />
+		<profile output="build/profile.output" classpathref="classpath">
+			<classpath id="internal.classpath">
+				<fileset dir="${basedir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchProfile>
+				<fileset dir="build/test-classes" includes="**/Profile*.class" />
+			</batchProfile>
+		</profile>
+	</target>
+
+	<target name="simple.call.nobatchprofile" depends="compile">
+		<profile output="" classpathref="classpath" />
+	</target>
+
+	<target name="simple.call.noclasspath">
+		<mkdir dir="build/test-classes" />
+		<profile output="build/profile.output">
+			<batchProfile>
+				<fileset dir="build/test-classes" includes="**/Profile*.class" />
+			</batchProfile>
+		</profile>
+	</target>
+
+	<target name="simple.call.nooutput" depends="compile">
+		<mkdir dir="build/test-classes" />
+		<profile>
+			<classpath id="internal.classpath">
+				<fileset dir="${basedir}">
+					<include name="**/*.jar" />
+				</fileset>
+			</classpath>
+			<batchProfile>
+				<fileset dir="build/test-classes" includes="**/Profile*.class" />
+			</batchProfile>
+		</profile>
+	</target>
+
+	<target name="real.simple" depends="compile">
+		<mkdir dir="build/classes" />
+		<javac srcdir="src" destdir="build/classes" />
+
+		<profile output="build/profile.output">
+			<classpath>
+				<path location="build/classes"/>
+				<path refid="classpath"/>
+			</classpath>
+			<batchProfile>
+				<fileset dir="build/classes" includes="**/Profile*.class" />
+			</batchProfile>
+		</profile>
+	</target>
+
+	<target name="clean">
+		<delete dir="build"/>
+	</target>
+</project>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="test-profiler-report" default="execute-report">
+
+	<path id="classpath">
+		<fileset dir="../../../repository">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="../build/dist">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="profiler-report" classname="br.com.oncast.dev.lobo.task.ProfilerReporterTask" classpathref="classpath" />
+
+	<target name="execute-report">
+		<profiler-report input="build/merged-report.xml" output="report" />
+	</target>
+
+	<target name="clean">
+		<delete dir="report" />
+	</target>
+
+</project>

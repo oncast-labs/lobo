@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="project">
+
+	<path id="classpath">
+		<fileset dir="../../../repository">
+			<include name="**/*.jar" />
+		</fileset>
+		<fileset dir="../build/dist">
+			<include name="**/*.jar" />
+		</fileset>
+	</path>
+
+	<taskdef name="profiler-merge" classname="br.com.oncast.dev.lobo.task.ProfilerMergeTask" classpathref="classpath" />
+
+	<target name="execute-profiler-merge">
+		<profiler-merge 
+			buildname="1.11" 
+			buildmetrics="build/profile-source.xml"
+			merge="build/merge-source.xml" />
+	</target>
+	
+	<target name="execute-profiler-merge-no-merged-source">
+		<profiler-merge 
+			buildname="1.11" 
+			buildmetrics="build/profile-source.xml" 
+			merge="build/merge-output.xml" />
+	</target>
+
+
+</project>
